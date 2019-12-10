@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.login_registration.two_factor_auth.TwoFactorAuth">
+
+    <TextView
+        android:id="@+id/text_view_1"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="Verify Your Phone" />
+
+    <LinearLayout
+        android:id="@+id/two_factor_code"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_below="@+id/text_view_1"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <EditText
+            android:id="@+id/two_factor_code1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shadow"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="45dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/two_factor_code2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shadow"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="45dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/two_factor_code3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shadow"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="45dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/two_factor_code4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shadow"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="45dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/two_factor_code5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shadow"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="45dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/two_factor_code6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shadow"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="45dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/two_factor_code"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="verifying..."
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Verify"
+        app:cornerRadius="0dp" />
+</RelativeLayout>
