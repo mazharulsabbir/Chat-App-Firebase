@@ -11,10 +11,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".NewChatActivity"></activity>
-        <activity android:name=".UserActivity"
+        <activity android:name=".ProfileActivity"></activity>
+        <activity
+            android:name=".NewChatActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UserActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +30,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

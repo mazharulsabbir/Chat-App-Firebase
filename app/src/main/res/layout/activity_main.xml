@@ -8,20 +8,17 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        app:liftOnScroll="true"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            app:layout_scrollFlags="enterAlways|snap|scroll"
-            android:layout_height="match_parent"
-            app:contentScrim="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_collapseMode="pin">
@@ -29,28 +26,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="16dp"
                     android:text="Chats"
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/avatar"
                     style="@style/Widget.AppCompat.Light.ActionButton"
                     android:layout_width="?actionBarSize"
                     android:layout_height="?actionBarSize"
+                    android:layout_alignParentEnd="true"
                     android:layout_gravity="center_vertical|end" />
-            </FrameLayout>
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/app_name" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main" />

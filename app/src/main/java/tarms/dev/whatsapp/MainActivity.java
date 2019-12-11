@@ -3,7 +3,8 @@ package tarms.dev.whatsapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         init();
+        getChatLists();
+
+        findViewById(R.id.avatar).setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), ProfileActivity.class)));
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), NewChatActivity.class)));
@@ -60,15 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
         reloadData.setRefreshing(true);
 
-        ImageButton avatar = findViewById(R.id.avatar);
-        Glide.with(getApplicationContext()).load(Utils.AVATARS[0])
+        ImageView avatar = findViewById(R.id.avatar);
+
+        Glide.with(getApplicationContext()).load(user.getPhotoUrl())
                 .circleCrop().into(avatar);
-
-        avatar.setOnClickListener(profile -> {
-            //todo: open profile & others settings activity
-        });
-
-        getChatLists();
     }
 
     private void getChatLists() {
@@ -80,8 +79,6 @@ public class MainActivity extends AppCompatActivity {
         chatsView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         chatsView.setAdapter(chatsAdapter);
-
-//        chatsView.addOnItemTouchListener();
 
         reference.child(Utils.getChatsReference(user))
                 .addValueEventListener(new ValueEventListener() {
@@ -106,15 +103,21 @@ public class MainActivity extends AppCompatActivity {
                                                 .child(chatsList.get(pos).getUid())
                                                 .setValue(updateChat);
 
+                                        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                                        intent.putExtra(Utils.RECEIVER_UID, updateChat.getUid());
+                                        startActivity(intent);
+
                                         chatsAdapter.notifyDataSetChanged();
                                     });
                                 }
 
-                                reloadData.setRefreshing(false);
                             }
                         } else {
-                            dummyChats();/*remove this dummy chats*/
+//                            dummyChats();/*remove this dummy chats*/
+                            //todo: show no chats icon and start chat button
                         }
+
+                        reloadData.setRefreshing(false);
                     }
 
                     @Override
@@ -140,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
                 Snackbar.make(view, "Chat is removed", Snackbar.LENGTH_LONG).setAction("Undo", undo ->
                         reference.child(Utils.setChatsReference(user.getUid()))
-                        .child(chatsList.get(pos).getUid())
-                        .setValue(chats)).show();
+                                .child(chatsList.get(pos).getUid())
+                                .setValue(chats)).show();
             }
         };
 

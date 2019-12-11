@@ -16,10 +16,13 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Random;
+
 import tarms.dev.whatsapp.R;
 import tarms.dev.whatsapp.UserActivity;
 import tarms.dev.whatsapp.fragments.login_registration.two_factor_auth.TwoFactorAuth;
-import tarms.dev.whatsapp.model.UserRegistration;
+import tarms.dev.whatsapp.model.User;
+import tarms.dev.whatsapp.utils.Utils;
 
 public class Registration extends Fragment {
 
@@ -69,8 +72,11 @@ public class Registration extends Fragment {
         password = String.valueOf(mPassword.getEditText().getText());
 
         if (validateInfo(name, email, phone, password)) {
-            String avatarImage = "https://firebasestorage.googleapis.com/v0/b/whats-app-messanger-clone-app.appspot.com/o/avatar%2Fic_male_avatar.png?alt=media&token=71bda7b7-ca45-4f0f-b53d-e3980faf5301";
-            androidx.fragment.app.Fragment twoFactorAuth = TwoFactorAuth.newInstance(new UserRegistration(name, email, phoneNo, password, avatarImage));
+            Random random = new Random();
+
+            String avatarImage = Utils.AVATARS[random.nextInt(5)];
+
+            androidx.fragment.app.Fragment twoFactorAuth = TwoFactorAuth.newInstance(new User(name, email, phoneNo, password, avatarImage));
             ((UserActivity) getActivity()).addFirstFragment(twoFactorAuth);
         }
     }

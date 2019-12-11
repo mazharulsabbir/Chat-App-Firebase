@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 
 import tarms.dev.whatsapp.MainActivity;
 import tarms.dev.whatsapp.R;
-import tarms.dev.whatsapp.model.UserRegistration;
+import tarms.dev.whatsapp.model.User;
 import tarms.dev.whatsapp.utils.Utils;
 
 public class TwoFactorAuth extends Fragment {
@@ -47,7 +47,7 @@ public class TwoFactorAuth extends Fragment {
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private String mVerificationId;
 
-    private UserRegistration userRegistration;
+    private User user;
 
     private String verificationCode = "";
 
@@ -57,10 +57,10 @@ public class TwoFactorAuth extends Fragment {
 
     private Toast toast;
 
-    public static TwoFactorAuth newInstance(UserRegistration userRegistration) {
+    public static TwoFactorAuth newInstance(User user) {
         TwoFactorAuth fragment = new TwoFactorAuth();
         Bundle args = new Bundle();
-        args.putParcelable(TwoFactorAuth.PHONE_NO, userRegistration);
+        args.putParcelable(TwoFactorAuth.PHONE_NO, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,7 +69,7 @@ public class TwoFactorAuth extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            userRegistration = getArguments().getParcelable(PHONE_NO);
+            user = getArguments().getParcelable(PHONE_NO);
         }
     }
 
@@ -97,7 +97,7 @@ public class TwoFactorAuth extends Fragment {
         et6.addTextChangedListener(new GenericTextWatcher(et6));
 
         //phone number verification started
-        startPhoneNumberVerification(userRegistration.getPhone());
+        startPhoneNumberVerification(user.getPhone());
 
         view.findViewById(R.id.verify).setOnClickListener(verify -> {
             if (verificationCode.trim().length() == 6)
@@ -237,8 +237,8 @@ public class TwoFactorAuth extends Fragment {
                         }
 
                         AuthCredential linkAuthCredential =
-                                EmailAuthProvider.getCredential(userRegistration.getEmail(),
-                                        userRegistration.getPassword()
+                                EmailAuthProvider.getCredential(user.getEmail(),
+                                        user.getPassword()
                                 );
 
                         linkWithEmailAndPassword(linkAuthCredential);
@@ -283,10 +283,10 @@ public class TwoFactorAuth extends Fragment {
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
                         Map<String, Object> createNewUser = new HashMap<>();
-                        createNewUser.put("name", userRegistration.getName());
-                        createNewUser.put("email", userRegistration.getEmail());
-                        createNewUser.put("phone", userRegistration.getPhone());
-                        createNewUser.put("image", userRegistration.getImage());
+                        createNewUser.put("name", this.user.getName());
+                        createNewUser.put("email", this.user.getEmail());
+                        createNewUser.put("phone", this.user.getPhone());
+                        createNewUser.put("image", this.user.getImage());
 
                         reference.child(Utils.getUserInfoReference(user))
                                 .updateChildren(createNewUser)
@@ -295,8 +295,8 @@ public class TwoFactorAuth extends Fragment {
                                 });
 
                         UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(userRegistration.getName().trim())
-                                .setPhotoUri(Uri.parse(userRegistration.getImage()))
+                                .setDisplayName(this.user.getName().trim())
+                                .setPhotoUri(Uri.parse(this.user.getImage()))
                                 .build();
 
                         user.updateProfile(userProfileChangeRequest);
