@@ -8,8 +8,10 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,12 +30,15 @@ import java.util.List;
 
 import tarms.dev.whatsapp.adapter.ChatsAdapter;
 import tarms.dev.whatsapp.model.Chats;
+import tarms.dev.whatsapp.utils.SwipeToRemoveItem;
 import tarms.dev.whatsapp.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+    private SwipeRefreshLayout reloadData;
 
     private List<Chats> chatsList = new ArrayList<>();
 
@@ -51,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
+        reloadData = findViewById(R.id.refresh_data);
+
+        reloadData.setRefreshing(true);
+
         ImageButton avatar = findViewById(R.id.avatar);
         Glide.with(getApplicationContext()).load(Utils.AVATARS[0])
                 .circleCrop().into(avatar);
@@ -63,12 +72,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getChatLists() {
+        reloadData.setOnRefreshListener(this::getChatLists);
+
         ChatsAdapter chatsAdapter = new ChatsAdapter(getApplicationContext(), chatsList);
         RecyclerView chatsView = findViewById(R.id.chat_holder);
         chatsView.setHasFixedSize(true);
         chatsView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         chatsView.setAdapter(chatsAdapter);
+
+//        chatsView.addOnItemTouchListener();
 
         reference.child(Utils.getChatsReference(user))
                 .addValueEventListener(new ValueEventListener() {
@@ -96,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
                                         chatsAdapter.notifyDataSetChanged();
                                     });
                                 }
+
+                                reloadData.setRefreshing(false);
                             }
                         } else {
                             dummyChats();/*remove this dummy chats*/
@@ -109,6 +124,29 @@ public class MainActivity extends AppCompatActivity {
                         Snackbar.make(view, databaseError.getMessage(), Snackbar.LENGTH_SHORT).show();
                     }
                 });
+
+        SwipeToRemoveItem swipeToRemoveItem = new SwipeToRemoveItem(getApplicationContext()) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int pos = viewHolder.getAdapterPosition();
+
+                Chats chats = chatsList.get(pos);
+
+                reference.child(Utils.setChatsReference(user.getUid()))
+                        .child(chatsList.get(pos).getUid())
+                        .setValue(null);
+
+                View view = findViewById(R.id.view);
+
+                Snackbar.make(view, "Chat is removed", Snackbar.LENGTH_LONG).setAction("Undo", undo ->
+                        reference.child(Utils.setChatsReference(user.getUid()))
+                        .child(chatsList.get(pos).getUid())
+                        .setValue(chats)).show();
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToRemoveItem);
+        itemTouchHelper.attachToRecyclerView(chatsView);
 
     }
 
