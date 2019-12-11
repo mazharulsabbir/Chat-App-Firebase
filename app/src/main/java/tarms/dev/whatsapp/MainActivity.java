@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    private ImageButton avatar;
 
     private List<Chats> chatsList = new ArrayList<>();
 
@@ -52,9 +51,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        avatar = findViewById(R.id.avatar);
-        Glide.with(getApplicationContext()).load("https://firebasestorage.googleapis.com/v0/b/whats-app-messanger-clone-app.appspot.com/o/avatar%2Fic_male_avatar.png?alt=media&token=71bda7b7-ca45-4f0f-b53d-e3980faf5301")
+        ImageButton avatar = findViewById(R.id.avatar);
+        Glide.with(getApplicationContext()).load(Utils.AVATARS[0])
                 .circleCrop().into(avatar);
+
+        avatar.setOnClickListener(profile -> {
+            //todo: open profile & others settings activity
+        });
 
         getChatLists();
     }
@@ -113,14 +116,15 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 20; i++) {
             String senderId = reference.push().getKey();
 
-            reference.child(Utils.setChatsReference(user.getUid()))
-                    .child(senderId) /*todo: this will be sender uid*/
-                    .setValue(new Chats(senderId/*todo: change with sender id*/,
-                            String.valueOf(user.getPhotoUrl()),
-                            user.getDisplayName(), "Just A Message " + i
-                            , String.valueOf(new Date().getTime()),
-                            false)
-                    );
+            if (senderId != null)
+                reference.child(Utils.setChatsReference(user.getUid()))
+                        .child(senderId) /*todo: this will be sender uid*/
+                        .setValue(new Chats(senderId/*todo: change with sender id*/,
+                                String.valueOf(user.getPhotoUrl()),
+                                user.getDisplayName(), "Just A Message " + i
+                                , String.valueOf(new Date().getTime()),
+                                false)
+                        );
         }
     }
 
