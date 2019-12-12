@@ -16,6 +16,7 @@ public class Utils {
     };
 
     public static final String USERS = "users/";
+    public static final String CHAT = "chats/";
 
     public static String getUserInfoReference(FirebaseUser user) {
         return "users/" + user.getUid() + "/info/";

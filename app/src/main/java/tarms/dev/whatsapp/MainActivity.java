@@ -2,9 +2,9 @@ package tarms.dev.whatsapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,11 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import tarms.dev.whatsapp.adapter.ChatsAdapter;
 import tarms.dev.whatsapp.model.Chats;
+import tarms.dev.whatsapp.model.User;
 import tarms.dev.whatsapp.utils.SwipeToRemoveItem;
 import tarms.dev.whatsapp.utils.Utils;
 
@@ -53,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
         init();
         getChatLists();
 
-        findViewById(R.id.avatar).setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), ProfileActivity.class)));
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), NewChatActivity.class)));
     }
@@ -63,11 +60,22 @@ public class MainActivity extends AppCompatActivity {
         reloadData = findViewById(R.id.refresh_data);
 
         reloadData.setRefreshing(true);
+    }
 
-        ImageView avatar = findViewById(R.id.avatar);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        Glide.with(getApplicationContext()).load(user.getPhotoUrl())
-                .circleCrop().into(avatar);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(), UserActivity.class));
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getChatLists() {
@@ -103,8 +111,12 @@ public class MainActivity extends AppCompatActivity {
                                                 .child(chatsList.get(pos).getUid())
                                                 .setValue(updateChat);
 
+                                        User user = new User(updateChat.getName(),"","","",updateChat.getImageUrl());
+
                                         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
                                         intent.putExtra(Utils.RECEIVER_UID, updateChat.getUid());
+                                        intent.putExtra(Utils.RECEIVER, user);
+
                                         startActivity(intent);
 
                                         chatsAdapter.notifyDataSetChanged();
@@ -113,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         } else {
-//                            dummyChats();/*remove this dummy chats*/
+                            chatsAdapter.notifyDataSetChanged();
                             //todo: show no chats icon and start chat button
                         }
 
@@ -151,22 +163,6 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToRemoveItem);
         itemTouchHelper.attachToRecyclerView(chatsView);
 
-    }
-
-    private void dummyChats() {
-        for (int i = 0; i < 20; i++) {
-            String senderId = reference.push().getKey();
-
-            if (senderId != null)
-                reference.child(Utils.setChatsReference(user.getUid()))
-                        .child(senderId) /*todo: this will be sender uid*/
-                        .setValue(new Chats(senderId/*todo: change with sender id*/,
-                                String.valueOf(user.getPhotoUrl()),
-                                user.getDisplayName(), "Just A Message " + i
-                                , String.valueOf(new Date().getTime()),
-                                false)
-                        );
-        }
     }
 
 }

@@ -77,9 +77,10 @@ public class NewChatActivity extends AppCompatActivity {
                     User user = snapshot.child("info").getValue(User.class);
 
                     if (user != null) {
-                        userUid.add(snapshot.getKey());
-                        if (!Objects.equals(snapshot.getKey(), mUser.getUid()))
+                        if (!Objects.equals(snapshot.getKey(), mUser.getUid())) {
                             userList.add(user);
+                            userUid.add(snapshot.getKey());
+                        }
                     }
 
                     adapter.notifyDataSetChanged();

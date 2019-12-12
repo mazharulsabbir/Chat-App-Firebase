@@ -53,7 +53,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/loginViewsMargin"
-                android:hint="Email">
+                android:hint="Email"
+                app:boxStrokeColor="#000"
+                app:hintTextColor="#000">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -69,6 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/loginViewsMargin"
                 android:hint="Password"
+                app:boxStrokeColor="#000"
+                app:hintTextColor="#000"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -85,6 +89,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/loginViewsMargin"
                 android:text="Login"
+                android:textColor="#000"
                 app:cornerRadius="16dp" />
 
             <TextView
@@ -102,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:weightSum="12">
 
                 <View
@@ -131,7 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <ImageButton
                     style="@style/Widget.AppCompat.Light.ActionButton"

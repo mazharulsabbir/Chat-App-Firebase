@@ -9,14 +9,13 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="?actionBarSize">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:menu="@menu/menu_main"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -29,17 +28,8 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="start|center_vertical"
                     android:text="Chats"
-                    android:textColor="#fff"
                     android:textSize="24sp"
                     android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/avatar"
-                    style="@style/Widget.AppCompat.Light.ActionButton"
-                    android:layout_width="?actionBarSize"
-                    android:layout_height="?actionBarSize"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="center_vertical|end" />
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
