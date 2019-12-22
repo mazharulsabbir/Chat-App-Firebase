@@ -24,6 +24,8 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             tools:listitem="@layout/chat_item_left"
             android:id="@+id/message_holder"
             android:layout_width="match_parent"

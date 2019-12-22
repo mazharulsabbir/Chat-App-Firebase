@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), UserActivity.class));
             finish();
         }
+
+        if (item.getItemId() == R.id.profile) {
+            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -111,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                                                 .child(chatsList.get(pos).getUid())
                                                 .setValue(updateChat);
 
-                                        User user = new User(updateChat.getName(),"","","",updateChat.getImageUrl());
+                                        User user = new User(updateChat.getName(), "", "", "", updateChat.getImageUrl());
 
                                         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
                                         intent.putExtra(Utils.RECEIVER_UID, updateChat.getUid());
@@ -153,15 +157,12 @@ public class MainActivity extends AppCompatActivity {
 
                 View view = findViewById(R.id.view);
 
-                Snackbar.make(view, "Chat is removed", Snackbar.LENGTH_LONG).setAction("Undo", undo ->
-                        reference.child(Utils.setChatsReference(user.getUid()))
-                                .child(chatsList.get(pos).getUid())
-                                .setValue(chats)).show();
+                Snackbar.make(view, "Chat is removed", Snackbar.LENGTH_LONG).show();
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToRemoveItem);
-        itemTouchHelper.attachToRecyclerView(chatsView);
+//        itemTouchHelper.attachToRecyclerView(chatsView);
 
     }
 

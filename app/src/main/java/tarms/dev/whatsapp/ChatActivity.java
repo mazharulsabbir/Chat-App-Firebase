@@ -90,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().setTitle(user.getName());
-                    getSupportActionBar().setSubtitle(user.getPhone());
+//                    getSupportActionBar().setSubtitle(user.getPhone());
                 }
             }
         }
