@@ -34,25 +34,35 @@
 
         <EditText
             android:id="@+id/message"
+            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/shape_message_box"
-            android:hint="Aa"
-            android:layout_toLeftOf="@+id/send_message"
+            android:hint="Type a message"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp" />
+            android:paddingEnd="55dp" />
 
         <ImageButton
-            android:layout_margin="8dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_image_black_24dp"
+            style="@style/Widget.AppCompat.Light.ActionButton"
+            android:layout_alignStart="@+id/message"
+            android:layout_alignTop="@+id/message"
+            android:layout_alignBottom="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageButton
             android:id="@+id/send_message"
             style="@style/Widget.AppCompat.Light.ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/message_holder"
-            android:layout_alignParentEnd="true"
+            android:layout_alignEnd="@+id/message"
             android:layout_alignTop="@+id/message"
             android:layout_alignBottom="@+id/message"
             android:src="@drawable/ic_send_black_24dp" />

@@ -35,6 +35,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
+    private User mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +69,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private void initUser() {
         if (getIntent() != null) {
-            User user = getIntent().getParcelableExtra(Utils.RECEIVER);
+            mUser = getIntent().getParcelableExtra(Utils.RECEIVER);
 
-            if (user != null) {
+            if (mUser != null) {
 //                Glide.with(this).asDrawable().load(user.getImage())
 //                        .circleCrop()
 //                        .apply(new RequestOptions().override(50, 50))
@@ -89,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
 //                        });
 
                 if (getSupportActionBar() != null) {
-                    getSupportActionBar().setTitle(user.getName());
+                    getSupportActionBar().setTitle(mUser.getName());
 //                    getSupportActionBar().setSubtitle(user.getPhone());
                 }
             }
@@ -97,7 +99,15 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void chatting() {
+        String receiverUid = getIntent().getStringExtra(Utils.RECEIVER_UID);
+
         List<Msg> msgs = new ArrayList<>();
+        MsgAdapter msgAdapter = new MsgAdapter(msgs);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        recyclerView.setAdapter(msgAdapter);
 
         reference.child(Utils.CHAT).addValueEventListener(new ValueEventListener() {
             @Override
@@ -109,17 +119,14 @@ public class ChatActivity extends AppCompatActivity {
 
                     if (msg != null) {
                         if (msg.getSenderUid().equals(user.getUid()) | msg.getReceiverUid().equals(user.getUid())) {
-                            msgs.add(msg);
+                            if (msg.getSenderUid().equals(receiverUid) | msg.getReceiverUid().equals(receiverUid))
+                                msgs.add(msg);
                         }
                     }
                 }
 
-                MsgAdapter msgAdapter = new MsgAdapter(msgs);
-
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-                recyclerView.setAdapter(msgAdapter);
+                msgAdapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(recyclerView.getBottom());
             }
 
             @Override

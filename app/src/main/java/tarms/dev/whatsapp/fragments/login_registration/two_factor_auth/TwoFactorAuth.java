@@ -288,18 +288,20 @@ public class TwoFactorAuth extends Fragment {
                         createNewUser.put("phone", this.user.getPhone());
                         createNewUser.put("image", this.user.getImage());
 
-                        reference.child(Utils.getUserInfoReference(user))
-                                .updateChildren(createNewUser)
-                                .addOnCompleteListener(complete -> {
-                                    startActivity(new Intent(getActivity(), MainActivity.class));
-                                });
-
                         UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(this.user.getName().trim())
                                 .setPhotoUri(Uri.parse(this.user.getImage()))
                                 .build();
 
-                        user.updateProfile(userProfileChangeRequest);
+                        reference.child(Utils.getUserInfoReference(user))
+                                .updateChildren(createNewUser)
+                                .addOnCompleteListener(complete -> {
+
+                                    user.updateProfile(userProfileChangeRequest);
+
+                                    startActivity(new Intent(getActivity(), MainActivity.class));
+                                    getActivity().finish();
+                                });
 
                     }
                 } else {

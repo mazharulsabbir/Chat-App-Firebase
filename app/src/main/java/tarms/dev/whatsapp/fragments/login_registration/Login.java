@@ -1,5 +1,6 @@
 package tarms.dev.whatsapp.fragments.login_registration;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -72,12 +73,21 @@ public class Login extends Fragment {
 
             if (valid) {
 
+                ProgressDialog dialog = new ProgressDialog(getContext());
+                dialog.setCancelable(false);
+                dialog.setMessage("Logging in...");
+
                 mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
 
+                    dialog.show();
 
                     if (task.isSuccessful()) {
+                        dialog.cancel();
                         startActivity(new Intent(getActivity(), MainActivity.class));
+                        getActivity().finish();
                     } else {
+                        dialog.cancel();
+
                         Log.e(TAG, "onCreateView: ", task.getException());
 
                         if (task.getException() instanceof FirebaseAuthInvalidUserException) {
