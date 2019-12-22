@@ -45,7 +45,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatHolder> 
         Chats chats = chatsList.get(position);
 
         @SuppressLint("SimpleDateFormat")
-        String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(Long.parseLong(chats.getTime())));
+        String dateString = new SimpleDateFormat("hh:mm:ss").format(new Date(Long.parseLong(chats.getTime())));
         Glide.with(context).load(chats.getImageUrl()).circleCrop().into(holder.avatar);
 
         holder.name.setText(chats.getName());
